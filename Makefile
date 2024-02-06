@@ -6,7 +6,7 @@
 #    By: gpardini <gpardini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/05 12:11:54 by gpardini          #+#    #+#              #
-#    Updated: 2024/02/05 12:12:12 by gpardini         ###   ########.fr        #
+#    Updated: 2024/02/06 12:29:24 by gpardini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ FLAGS = -Wall -Werror -Wextra -g
 MLXFLAGS	=	-L ./minilibx -lmlx -Ilmlx -lXext -lX11
 MINILIBX_PATH	=	./minilibx
 MINILIBX		=	$(MINILIBX_PATH)/libmlx.a
-SRC = main.c
+SRC = main.c get_next_line.c lib_utils.c
 
 OBJ = $(SRC:%.c=%.o)
 
@@ -26,6 +26,8 @@ ${NAME}: $(OBJ)
 	$(MAKE) --no-print-directory -C $(MINILIBX_PATH)
 	$(CC) $(FLAGS) -lm $(SRC) $(MLXFLAGS) -o $(NAME)
 	@rm *.o
+	@clear
+	#Compilation done!
 
 clean:
 	@rm -rf $(OBJ)
@@ -35,4 +37,7 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+run: re
+	@./cub3d
+
+.PHONY: all clean fclean re run
