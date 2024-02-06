@@ -6,7 +6,7 @@
 /*   By: gpardini <gpardini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 12:12:18 by gpardini          #+#    #+#             */
-/*   Updated: 2024/02/06 15:25:17 by gpardini         ###   ########.fr       */
+/*   Updated: 2024/02/06 15:44:10 by gpardini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,9 +168,33 @@ void    file_to_map(int fd)
     data()->map[i] = NULL;
 }
 
-void    file_check(void)
+//check for wrong chars in map matriz, and return a value
+int     check_char(char c)
 {
-    
+    if (c != '1' && c != '0' && c != 'N' && c != 'S' && c != 'W' && c != 'E' && c != ' ')
+        return(1);
+    else
+        return(0);
+}
+
+//loop the entire matriz searching for chars errors
+void    file_while_check(void)
+{
+    int i;
+    int y;
+
+    i = 0;
+    y = 0;
+    while (data()->map[i])
+    {
+        while(data()->map[i][y])
+        {
+            if (check_char(data()->map[i][y]))
+                printf("Error in file_to_check()\n");
+            y++;
+        }
+        i++;        
+    }
 }
 
 //Save and check every imput before the game starts
@@ -179,7 +203,7 @@ void    parsing(char **av)
     file_is_cub(av[1]);
     file_settings(open(av[1], O_RDONLY));
     file_to_map(open(av[1], O_RDONLY));
-    file_check();
+    file_while_check();
     map_print();
 }
 
