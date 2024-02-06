@@ -6,7 +6,7 @@
 /*   By: gpardini <gpardini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 12:13:11 by gpardini          #+#    #+#             */
-/*   Updated: 2024/02/06 12:13:46 by gpardini         ###   ########.fr       */
+/*   Updated: 2024/02/06 14:15:59 by gpardini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ typedef struct s_data
     char *map_EA;
     char *map_F;
     char *map_C;
+    int  map_x;
+    int  map_y;
     char **map;
     //:D
 }	t_data;
