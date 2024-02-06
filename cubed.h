@@ -6,7 +6,7 @@
 /*   By: gpardini <gpardini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 12:13:11 by gpardini          #+#    #+#             */
-/*   Updated: 2024/02/06 14:15:59 by gpardini         ###   ########.fr       */
+/*   Updated: 2024/02/06 17:49:30 by gpardini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,11 @@ typedef struct s_data
     int  map_x;
     int  map_y;
     char **map;
-    //:D
-}	t_data;
+    //parte para contar PCE
+    int player_x;
+    int player_y;
+    char   player_d;
+    }	t_data;
 
 //get_next_line utils
 int	    ound_breakline(char *string);
