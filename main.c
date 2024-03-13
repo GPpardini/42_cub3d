@@ -6,17 +6,24 @@
 /*   By: gpardini <gpardini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 12:12:18 by gpardini          #+#    #+#             */
-/*   Updated: 2024/02/06 18:26:42 by gpardini         ###   ########.fr       */
+/*   Updated: 2024/02/27 13:03:05 by gpardini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cubed.h"
 
-//static function that return my variable anywhere in the code
+//static function for general that return my variable anywhere in the code
 t_data  *data(void)
 {
     static t_data data;
     return(&data);
+}
+
+//static function for mlx that return my variable anywhere in the code
+t_game  *g(void)
+{
+    static t_game game;
+    return(&game);
 }
 
 //check if the file is .cub
@@ -142,9 +149,9 @@ void    map_print(void)
         i++;
     }
     printf("------------------- MORE ------------------\n");
-    printf("data()->player_x = |%d|\n", data()->player_x);
-    printf("data()->player_y = |%d|\n", data()->player_y);
-    printf("data()->player_d = |%c|\n", data()->player_d);
+    //printf("data()->player_x = |%d|\n", data()->player_x);
+    //printf("data()->player_y = |%d|\n", data()->player_y);
+    //printf("data()->player_d = |%c|\n", data()->player_d);
 }
 
 //Malloc the map into data() using GET_NEXT_LINE
@@ -196,12 +203,12 @@ void    map_check_matriz(void)
     {
         while(data()->map[y][x])
         {
-            if (check_char(data()->map[y][x]))
+            if (check_char(data()->map[y][x]) == 1)
             {
                 printf("DEBUG check_char: |%c|\n", data()->map[y][x]);
                 printf("Error in file_to_check()\n");
             }
-            if (check_char(data()->map[y][x]))
+            if (check_char(data()->map[y][x]) == 2)
             {
                 data()->player_x = x;
                 data()->player_y = y;
@@ -253,16 +260,93 @@ void    parsing(char **av)
     map_flood_fill(data()->player_x, data()->player_y, data()->map, data()->map_y);
     map_print();
 }
-// Para checar se o mapa e cercado de pareder eu posso odar a matriz percorendo
-// a primeira ocorrencia do ('1') e o ultimo argumento de cada string para checar as laterais
-// sequencialmente do comeco buscando uma string com somente ('1') e/ou (' ')
-// pela logica, checar o para inverso, passando primeiro por todos os indices de todo o eixo y
-// ate encontar a primeira e a ultima ocorrencia do ('1') apos os whitespaces,
+
+//function to simple check if you give a valid AC, exit program if false.
+void is_ac_valid(int ac)
+{
+    if (ac == 2)
+        return ;
+    else
+    {
+        printf("Wrong format, you should use -> ./cub3D [path_to_map]\n");
+        exit(0);        
+    }
+}
+
+//function that init mlx and open a new windown
+void    init_mlx(void)
+{
+    g()->mlx = mlx_init();
+    g()->mlx_win = mlx_new_window(g()->mlx, 600, 600, "Cub2d");
+}
+
+//function that return a trgb pattern to use
+int	create_trgb(int t, int r, int g, int b)
+{
+	return (t << 24 | r << 16 | g << 8 | b);
+}
+
+//test function to learn how to use pixels in mlx
+void    init_img(void)
+{
+    t_img img;
+    img.img = mlx_new_image(g()->mlx, 600, 600);
+    img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
+    
+    int x = 0;
+    int y = 0;
+    int color_down = create_trgb(1, 1, 120, 50);
+    int color_up = create_trgb(1, 1, 50, 120);
+    int color = color_down;
+    while (x <= 600)
+    {
+        if (x > 300)
+            color = color_up;
+        while(y <= 600)
+        {
+            my_mlx_pixel_put(&img, y, x, color);
+            y++;
+        }
+        y = 0;
+        x++;
+        // color = create_trgb(y, x, y, 1);
+    }
+    render_this_shit(&img);
+	mlx_put_image_to_window(g()->mlx, g()->mlx_win, img.img, 0, 0);
+}
+
+
+
+void close_win(void)
+{
+    exit(0);
+}
+int	key_manager(int keycode)
+{
+	if (keycode == 0xff1b)
+		close_win();
+	// if (keycode == 0xff52)
+	// 	move_up();
+	// if (keycode == 0xff54)
+	// 	move_down();
+	// if (keycode == 0xff53)
+	// 	move_right();
+	// if (keycode == 0xff51)
+	// 	move_left();
+	return (0);
+}
 
 int main(int ac, char **av)
 {
-    (void)ac;
+    is_ac_valid(ac);
     parsing(av);
+    init_mlx();
+    init_img();
+    //.
+    mlx_key_hook(g()->mlx_win, key_manager, g());
+    mlx_hook(g()->mlx_win, 17, 1l << 17, (void *)close_win, g());
+    //.
+    mlx_loop(g()->mlx);
     return(0);
 }
 

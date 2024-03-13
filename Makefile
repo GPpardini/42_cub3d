@@ -6,7 +6,7 @@
 #    By: gpardini <gpardini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/05 12:11:54 by gpardini          #+#    #+#              #
-#    Updated: 2024/02/06 12:29:24 by gpardini         ###   ########.fr        #
+#    Updated: 2024/02/27 12:05:48 by gpardini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ FLAGS = -Wall -Werror -Wextra -g
 MLXFLAGS	=	-L ./minilibx -lmlx -Ilmlx -lXext -lX11
 MINILIBX_PATH	=	./minilibx
 MINILIBX		=	$(MINILIBX_PATH)/libmlx.a
-SRC = main.c get_next_line.c lib_utils.c
+SRC = main.c get_next_line.c lib_utils.c render.c
 
 OBJ = $(SRC:%.c=%.o)
 
